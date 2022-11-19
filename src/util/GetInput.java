@@ -1,11 +1,9 @@
 package util;
 
 import data.Tree;
+import iterate.PreOrder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class GetInput {
     public Map<Integer, ArrayList<Integer>> getTree() {
@@ -37,6 +35,10 @@ public class GetInput {
         Map<Integer, ArrayList<Integer>> trees = input.getTree();
         TreeMapFormatter formatter = new TreeMapFormatter();
         Tree<Integer> tree = formatter.format(trees);
-        System.out.println(tree);
+        PreOrder<Integer> preOrder = new PreOrder<>();
+        Queue<Integer> queue = preOrder.iterate(tree, new ArrayDeque<>());
+        queue.forEach(integer -> {
+            System.out.print(" "+integer);
+        });
     }
 }

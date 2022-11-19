@@ -5,7 +5,7 @@ import data.Tree;
 import java.util.Queue;
 
 public class PreOrder<T> {
-    public void iterate(Tree<T> tree, Queue<T> queue){
+    public Queue<T> iterate(Tree<T> tree, Queue<T> queue){
         queue.add(tree.getItem());
         Tree<T> leftChild = tree.getMostLeftChild();
 
@@ -13,5 +13,6 @@ public class PreOrder<T> {
             iterate(leftChild, queue);
             leftChild = leftChild.getNextSibling();
         }
+        return queue;
     }
 }
