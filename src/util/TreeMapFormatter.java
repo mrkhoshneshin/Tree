@@ -13,12 +13,9 @@ public class TreeMapFormatter {
         int counter = 1;
         for (Map.Entry<Integer, ArrayList<Integer>> entry : treeMap.entrySet()) {
             Tree<Integer> tree;
-            if (trees.containsKey(entry.getKey()))
-                tree = trees.get(entry.getKey());
-            else {
-                tree = findTreeFromChildren(entry.getKey(), trees);
-                if (tree == null)
-                    tree = new Tree<>(entry.getKey(), null);
+            tree = findTree(entry.getKey(), trees.get(1), new ArrayList<>());
+            if (tree == null){
+                tree = new Tree<>(entry.getKey(), null);
             }
             for (int i = 0; i < entry.getValue().size(); i++) {
                 tree.addChild(entry.getValue().get(i));
@@ -30,16 +27,20 @@ public class TreeMapFormatter {
         return trees.get(1);
     }
 
-    private Tree<Integer> findTreeFromChildren(int key, Map<Integer, Tree<Integer>> trees) {
+    public Tree<Integer> findTree(int key, Tree<Integer> tree, ArrayList<Tree<Integer>> trees) {
+        if (tree == null) return null;
+        trees.add(tree);
+        Tree<Integer> leftChild = tree.getMostLeftChild();
 
-        for (Map.Entry<Integer, Tree<Integer>> entry : trees.entrySet()) {
-            for (int i = 0; i < entry.getValue().getChildren().size(); i++) {
-                if (key == entry.getValue().getChildren().get(i).getItem())
-                    return entry.getValue().getChildren().get(i);
-            }
+        while (leftChild != null) {
+            findTree(key, leftChild, trees);
+            leftChild = leftChild.getNextSibling();
+        }
+
+        for (int i = 0; i < trees.size(); i++) {
+            if (trees.get(i).getItem() == key)
+                return trees.get(i);
         }
         return null;
     }
-
-
 }
